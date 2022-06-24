@@ -1,64 +1,65 @@
+const uuid = require('uuid');
+const { Items } = require('../db/models');
+const PokemonClient = require('../clients/pokemon_client');
 
-import PokemonClient from "../clients/pokemon_client.js";
-const pokemon = new PokemonClient();
-
-export default class ItemManager {
+class ItemManager {
     constructor() {
-        this.todoList = [];
+        this.pokemonClient = new PokemonClient();
     }
     
-    async addItem(todo){
-        if (isNaN(todo)){
-            return {text:todo ,number:0};
-        }else{
-            const response = await (pokemon.getPokemonNameById(todo));
-            return {text:response,number:1};
+    getItems = async () => await Items.findAll(); 
+    
+    createItem = async item => {
+        await Items.create({"item_id":uuid.v1(), "itemName":item,"status":false});
+    };
+
+    deleteItem  =async (item) => {
+        await Items.destroy({ where:{ item_id:item }});
+
+    };
+
+    deleteAllItems= async () => {
+        await Items.destroy({where:{}});
+    };
+
+    changeStatusItem=async (id,status) => {
+        await Items.update({status:status},{where:{ item_id:id }});
+    };
+
+    changeNameItem=async (id,item) => {
+        await Items.update({itemName:item},{where:{ item_id:id }});
+    };
+
+    handleItem = async item => {
+        if (this._isNumber(item)) { return await this.fetchAndAddPokemon(item); }
+        if (this._isList(item)) { return await this.fetchAndAddManyPokemon(item); }
+        await this.createItem(item)
+    };
+
+    addPokemonItem = async pokemon => {
+        await this.createItem(`Catch ${pokemon.name}`);
+    };
+
+    fetchAndAddPokemon = async pokemonId => {
+        try {
+            const pokemon = await this.pokemonClient.getPokemon(pokemonId);
+            await this.addPokemonItem(pokemon);
+        } catch (error) {
+            await this.createItem(`Pokemon with ID ${pokemonId} was not found`);
+        }
+    };
+
+    fetchAndAddManyPokemon = async inputValue => {
+        try {
+            const pokemons = await this.pokemonClient.getManyPokemon(inputValue.replace("/ /g", "").split(","));
+            pokemons.forEach(this.addPokemonItem);
+        } catch (error) {
+            await this.createItem(`Failed to fetch pokemon with this input: ${inputValue}`);
         }
     }
 
-    async addArrayItem(todoArray,lengthData){
-        const arr=[];
-        const arr2=[];
-        let str='';
-
-        await Promise.all(todoArray.map(async todo => {
-            const pokemon = await this.addItem(todo);
-            if (pokemon.text.length>0){
-                arr.push(pokemon);
-            }
-        }))
-
-        arr.forEach((item)=>{
-            if(item.number){
-                arr2.push({id:lengthData,text:item.text});
-                lengthData++
-            }else{
-                if (str.length>0){
-                    str=str+','+item.text
-                }else{
-                    str=item.text
-                }
-            }
-        })
-
-        if (str.length>0){
-            arr2.push({id:lengthData,text:str});
-            lengthData++
-        }
-
-        return arr2
-    }
-
-    deleteListTodo(){
-        this.todoList=[];
-    }
-
-    deleteIdListTodo(id){
-        this.todoList=this.todoList.filter((item) => item.id!=id);
-    }
-
-    deleteNameListTodo(name){
-        this.todoList=this.todoList.filter((item) => item.name!=name);
-    }
+    _isNumber = value => !isNaN(Number(value));
+    _isList = value => value.split(",").every(this._isNumber);
 }
+module.exports = new ItemManager()
 
