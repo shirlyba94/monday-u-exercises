@@ -1,36 +1,45 @@
-
 class itemClient {
     
-    constructor(){
-        this.todoList = [];
-    }
-
     async getTodo() {
-       const response = await fetch("/getAll");
+       const response =await fetch("/getAll");
        return await response.json();
     }
 
-    async addTodo(todoList) {
-        const response=await fetch("/",{
+    async addTodo(todo) {
+        await fetch("/",{
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify(todoList)
+            body: JSON.stringify({todo})
         })
-       return await response.json();
-     }
+    }
 
-     async deleteTodo(id) {
-        const response=await fetch("/"+id,{
+    async deleteTodo(id) {
+        await fetch("/id",{
+            method: 'DELETE',
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({id})
+        })
+    }
+
+    async deleteAllTodo() {
+        await fetch("/",{
             method: 'DELETE'
         })
-       return await response.json();
-     }
+    }
 
-     async deleteAllTodo() {
-        const response=await fetch("/",{
-            method: 'DELETE'
+    async changeDoneTodo(id,status) {
+        await fetch("/status",{
+            method: 'PUT',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({id,status})
         })
-       return await response.json();
-     }
+    }
+
+    async changeTodo(id,todo) {
+        await fetch("/item",{
+            method: 'PUT',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({id,todo})
+        })
+    }
  }
-
