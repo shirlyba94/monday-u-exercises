@@ -1,0 +1,66 @@
+.todo{
+  background-color: #c5e1e6;
+  height: 50px;
+  margin-bottom: 8px;
+  padding: 5px 10px;
+  border-radius: 5px;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid #939697;
+  cursor: pointer;
+  width: 90%;
+  opacity: 1;
+}
+
+.todo:hover,
+.todo:focus{
+  background-color: #7cafb8;
+  opacity: 1;
+}
+
+.todo:focus{
+  box-shadow: 0 0 0 4px rgba(167, 207, 236, 0.15);
+}
+
+.todo:hover .delete{
+  opacity: 1;
+}
+
+.todo .delete{
+  background-color: #0095ff;
+  border: 1px solid transparent;
+  border-radius: 3px;
+  box-shadow: rgba(255, 255, 255, .4) 0 1px 0 0 inset;
+  box-sizing: border-box;
+  color: #fff;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.15385;
+  margin: 0;
+  outline: none;
+  padding: 10px;
+  position: relative;
+  text-align: center;
+  text-decoration: none;
+  touch-action: manipulation;
+  vertical-align: baseline;
+  white-space: nowrap;
+  float: right;
+  opacity: 0;
+}
+
+.todo .delete:hover,
+.delete:focus{
+  background-color: #07c;
+  opacity: 1;
+}
+
+.todo .delete:focus{
+  box-shadow: 0 0 0 4px rgba(0, 149, 255, .15);
+  opacity: 1;
+}
+
+.listToDo{
+  float: left;
+}

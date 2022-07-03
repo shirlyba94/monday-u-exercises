@@ -1,18 +1,34 @@
-
-import express from "express";
-import {
-    createTodo,
-    getAll,
-    deleteTodo,
-    deleteAllTodo,
-} from "../controllers/todoController.js"; 
-
+const express = require('express')
 const todoRouter = express.Router();
+const itemManager = require('../services/item_manager.js')
 
-todoRouter.get('/getAll', getAll);
-todoRouter.post('/',createTodo);
-todoRouter.delete('/:id', deleteTodo);
-todoRouter.delete('/', deleteAllTodo);
+todoRouter.delete("/id", async (req, res) => {
+   await itemManager.deleteItem(req.body.id);
+    res.end();
+});
 
-export default todoRouter;
+todoRouter.delete('/', async (_, res) => {
+    await itemManager.deleteAllItems();
+    res.end();
+});
+
+todoRouter.get('/getAll', async (_, res) => {
+    res.send(await itemManager.getItems());
+});
+
+todoRouter.post('/', async (req, res) => {
+    res.send(await itemManager.handleItemReturn(req.body.todo));
+});
+
+todoRouter.put("/status", async (req, res) => {
+    res.send(await itemManager.changeStatusItem(req.body.id,req.body.status));
+});
+
+todoRouter.put("/item", async (req, res) => {
+    await itemManager.changeNameItem(req.body.id,req.body.todo);
+    res.end();
+});
+
+module.exports = todoRouter;
+
 
