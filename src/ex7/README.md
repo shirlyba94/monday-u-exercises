@@ -1,58 +1,53 @@
-# Exercise 7 - Redux
+# Exercise 5 - Sequelize ORM
+
+It is not persisted until you persist it!
 
 ## In this section you will practice
 
-**Setup Redux with your React project** - Use the provided files to configure redux with your application.
+**Initializing Sequelize ORM** - Connect NodeJS application to your mysql DB using Sequelize ORM 
 
-* Add the following packages into your package.json file:
-  * `"@reduxjs/toolkit": "^1.8.1"`
-  * `"react-redux": "^8.0.1"`
-* Copy the following files and directories into your application:
-  * `client/src/store.js`
-  * `client/src/actions`
-  * `client/src/reducers`
-  * `client/src/selectors`
-* Wrap your `App` component with `Provider` and pass it the store:
-  
-  `<Provider store={store}><App /></Provider>`
+**Sequelize models** - Use Sequelize models to execute queries on your DB
 
-  (See `client/src/index.js` file for example) 
-* You may need to update your server so it returns to the client the item that was added.
-
-**Store** - Initialize state and use dispatch to trigger actions
-
-**Reducer** - Catch actions and return new state when it's needed 
-
-**Selector** - Extract relevant data from the store
-
-**Connector** - Pass data from the store to the component
+**Migrations and seeds** - Manage DB changes using Sequelize migrations
 
 ## What you are going to build
 
-In the last exercise, you have changed your application to use React. Each of your components has its own local state.
+In the last exercise, you've added an ExpressJS server to your todo app, which allowed you to reload your todos from server. 
 
-Now you are going to use Redux to pass state between different components.
+But what happens when you restart your server?! you guessed right, all todos disappeared :( 
 
-This will make your project:
-* **State management** - Having a global state for your application
-* **Easier to pass state between components** - Make it easier to pass different state's properties between multiple components in a different hierarchy
-* **"Common"** - Redux is wildly used in the community and has tons of info about different use-cases you may encounter while developing
+In this exercise we will add a DB to our application that will hold all items' data. This will provide us a real persistent storage that would keep our data even if our server is down. 
+
+You can use your ex4 solution or use the boilerplate in this folder. 
+
+### Prerequisites:
+Following pre-requisites were covered in our last workshop. 
+- Download and install [docker](https://docs.docker.com/get-docker/)
+- Open console and pull latest mysql image: ```docker pull mysql/mysql-server ```
+- Run mysql container and initialize it with the proper user, password, db name and permissions: ```docker run -p 3306:3306 --name tododb -e MYSQL_ROOT_PASSWORD=password -e MYSQL_ROOT_HOST=% -e MYSQL_DATABASE=todo_db -d mysql/mysql-server```
+- Validate container is up: ```docker ps``` 
 
 ### The requirements:
-- [ ] Use redux actions for communicating with the server (fetching items, adding a new item, etc.)
-- [ ] Move the items from local component's state into the store
-- [ ] Handle failure of requests from the server
-- [ ] Handle loading
-- [ ] Add search
-- [ ] Add the ability to hide items that were marked as done or to show only them
 
-#### Your todo app is now:
-- Very easy to maintain and scale
-- Can use a vast amount of packages for almost every use-case
-- More performant out of the box
+- [ ] Install Sequelize and mysql driver. [Sequelize- Getting Started](https://sequelize.org/docs/v6/getting-started/)
+- [ ] Install Sequelize CLI. [Installing the CLI](https://sequelize.org/docs/v6/other-topics/migrations/)
+- [ ] Initialize Sequelize using `npx sequelize-cli init` inside 'src/server/db' folder 
+- [ ] Create Items table using [Sequelize migration](https://sequelize.org/docs/v6/other-topics/migrations/#creating-the-first-model-and-migration) - a new table with id and ItemName fields
+- [ ] Modify `item_manager.js`: remove items array and modify all item operations to use Item model
+- [ ] Create and run a separate migration for adding a `status` column (BOOLEAN) to Items table in your DB
+- [ ] Add checkbox to each item in UI to indicate its status (Done vs not)
+- [ ] Modify client and server code to support persistence of the new Item status 
+
+Your todo app should have now an additional checkbox that marks the status of the item. Every change to the checkbox should be stored in our Items table under the status column (true or false)
+
+Now, even if your server is down - all your items are stored. Once the server is up again - you should be able to see all items.
+
+Here is an example how it can look on the client side:
+![](../assets/hw-5.gif)
 
 ### Bonus
-- [ ] \* Debounce search
-- [ ] \* Implement an option to restore the last item that was deleted
-- [ ] ** Make your application accessible, i.e. keyboard navigation (ctrl+Enter create new, tab navigation)
-- [ ] Add redux logger middleware to your application
+
+- [ ] Add "Done" timestamp
+- [ ] Add index to the Items table (which columns compose the index?) 
+- [ ] Add server validation - create a new item only if not exists (Use transaction)
+- [ ] Add edit capabilities to an item. 

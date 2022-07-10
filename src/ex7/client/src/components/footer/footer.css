@@ -1,0 +1,39 @@
+.buttonClearAll{
+    background-color: #0095ff;
+    border: 1px solid transparent;
+    border-radius: 3px;
+    box-shadow: rgba(255, 255, 255, .4) 0 1px 0 0 inset;
+    box-sizing: border-box;
+    color: #fff;
+    cursor: pointer;
+    font-size: 10px;
+    padding: 6px 18px;
+    pointer-events: none;
+    opacity: 1;
+    box-shadow: none;
+    opacity: 1;
+    pointer-events: auto;
+    align-items: right;
+    margin :10px;
+} 
+
+.buttonClearAll.hover,
+.buttonClearAll.focus{
+    background-color: #07c;
+    pointer-events: auto;
+}
+  
+.buttonClearAll.focus{
+    box-shadow: 0 0 0 4px rgba(0, 149, 255, .15);
+    pointer-events: auto;
+}
+
+.footer{
+    display: inline; 
+    width: 80px;
+    height: 90px;
+}
+
+.footer h3{
+    font-size: 20px;
+}
