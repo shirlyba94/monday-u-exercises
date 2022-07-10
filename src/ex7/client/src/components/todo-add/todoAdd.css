@@ -29,11 +29,6 @@ input[type=text]:focus{
     position: relative;
     text-align: center;
     text-decoration: none;
-    user-select: none;
-    -webkit-user-select: none;
-    touch-action: manipulation;
-    vertical-align: baseline;
-    white-space: nowrap;
 }
 
 .buttonAdd:hover,

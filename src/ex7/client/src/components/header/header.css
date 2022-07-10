@@ -1,0 +1,10 @@
+.header{
+    width: 60px;
+    height: 30px;
+    display: inline;
+}
+
+.header h3{
+    font-size: 30px;
+}
+

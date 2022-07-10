@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import DeleteIcon from "../../images/delete_icon.svg"
 import "./todoItem.css";
 
-const TodoItem = ({done,onDoneClick,text,deleteTodo,id}) => {
+const TodoItem = ({done, onDoneClick, text, deleteTodo, id}) => {
   return (
     <div 
       className="todo">
@@ -19,7 +19,7 @@ const TodoItem = ({done,onDoneClick,text,deleteTodo,id}) => {
       <button
         className="delete"
         onClick={() => deleteTodo(id)}>
-       <img src={DeleteIcon}/>
+        <img src={DeleteIcon}/>
       </button>
     </div>
   );
@@ -27,7 +27,7 @@ const TodoItem = ({done,onDoneClick,text,deleteTodo,id}) => {
 
 TodoItem.propTypes = {
   done: PropTypes.bool,
-  id: PropTypes.string,
+  id: PropTypes.number,
   deleteTodo: PropTypes.func,
   onDoneClick:PropTypes.func,
   text:PropTypes.string,
