@@ -10,11 +10,11 @@ class ItemManager {
     getItems = async () => await Items.findAll(); 
     
     createItem = async item => {
-        await Items.create({"item_id":uuid.v1(), "itemName":item,"status":false});
+        await Items.create({"itemName":item,"status":false});
     };
 
     deleteItem  =async (item) => {
-        await Items.destroy({ where:{ item_id:item }});
+        await Items.destroy({ where:{ id:item }});
     };
 
     deleteAllItems= async () => {
@@ -22,12 +22,12 @@ class ItemManager {
     };
 
     changeStatusItem=async (id,status) => {
-        await Items.update({status:status},{where:{ item_id:id }});
+        await Items.update({status:status},{where:{ id:id }});
         return await this.getItems();
     };
 
     changeNameItem=async (id,item) => {
-        await Items.update({itemName:item},{where:{ item_id:id }});
+        await Items.update({itemName:item},{where:{ id:id }});
     };
 
     handleItem = async item => {

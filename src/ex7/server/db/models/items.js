@@ -14,10 +14,6 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Items.init({
-    item_id: {
-      type: DataTypes.STRING,
-      primaryKey: true
-    },
     itemName: DataTypes.STRING,
     status: DataTypes.BOOLEAN
   }, {

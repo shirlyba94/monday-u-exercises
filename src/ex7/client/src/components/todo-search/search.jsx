@@ -1,10 +1,10 @@
 import React, { useState,useCallback } from "react";
 import PropTypes from "prop-types";
 import { Button } from "monday-ui-react-core";
-import "./todoAdd.css";
+import "./search.css";
 
-const TodoAdd = ({addItemToTodoList}) => {
-    const [todoInput, setTodoInput] = useState('');
+const Search = ({filterName}) => {
+    const [todoSearch, setTodoSearch] = useState('');
     const [loading, setLoading] = useState(false);
 
     const onClick = useCallback((flag) => {
@@ -12,41 +12,41 @@ const TodoAdd = ({addItemToTodoList}) => {
     }, [setLoading]);
 
     const handleChange = event => {
-        setTodoInput(event.target.value);
+        setTodoSearch(event.target.value);
     };
 
-    const addTodo = async () => {
-        if(todoInput==='') {
-            alert("Please Enter new todo");
+    const searchTodo = async () => {
+        if(todoSearch==='') {
+            alert("Please Enter");
         }else {
             onClick(true);
-            addItemToTodoList(todoInput);
+            filterName(todoSearch);
             onClick(false);
-            setTodoInput('');
+            setTodoSearch('');
         };
     };
 
     return (
         <div>
             <input  
-                className="newToInput"
+                className="newToSearch"
                 type="text"
-                value={todoInput}
-                placeholder="Add your new todo"
+                value={todoSearch}
+                placeholder="Search.."
                 onChange={handleChange}>
             </input>
             <Button
                 size="small"
                 loading={loading}
-                onClick={addTodo}>
-                ➕
+                onClick={searchTodo}>
+                🔍
             </Button> 
         </div>
     );
 };
 
-TodoAdd.propTypes = {
-    addTodo: PropTypes.func,
+Search.propTypes = {
+    filterName:PropTypes.func,
 };
 
-export default TodoAdd;
+export default Search;
